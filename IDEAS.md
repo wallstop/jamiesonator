@@ -64,13 +64,13 @@ Notes
 Gameplan
 --------
 
-Create a fast, in-memory, in-place, stable sort of guests based on geneticly-assigned "weights" to form a priority  
-  list.
-Create a method of quickly determining an optimal room assignment based on genetically-assigned "weights" to 
-  guest preferences.
-Determine the minimum number of jamieson-ator runs (1000 default) to get a "pretty good" fitness.
-Determine optimal specimen pool size and number of children.
-Determine optimal replacement strategy for fit children into the gene pool.
-Tweak above until faster.
+ * Create a fast, in-memory, in-place, stable sort of guests based on geneticly-assigned "weights" to form a priority  
+    list.
+ * Create a method of quickly determining an optimal room assignment based on genetically-assigned "weights" to 
+    guest preferences.
+ * Determine the minimum number of jamieson-ator runs (1000 default) to get a "pretty good" fitness.
+ * Determine optimal specimen pool size and number of children.
+ * Determine optimal replacement strategy for fit children into the gene pool.
+ * Tweak above until faster.
   
   
