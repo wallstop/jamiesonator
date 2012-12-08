@@ -64,8 +64,7 @@ Notes
 Gameplan
 --------
 
- * Create a fast, in-memory, in-place, stable sort of guests based on geneticly-assigned "weights" to form a priority  
-    list.
+ * Genetically create a priority list of guests and a priority list of assignment factors.
  * Create a method of quickly determining an optimal room assignment based on genetically-assigned "weights" to 
     guest preferences.
  * Determine the minimum number of jamieson-ator runs (1000 default) to get a "pretty good" fitness.
