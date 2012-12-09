@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <assert.h>
 //#include "csv.h"
+//#include "util/csv.h" ...What's the big deal? Shouldn't have to typedef below.
 typedef void * CSVReaderRef; // We need to resolve this include business ASAP. I'll post something on SO.
 
 CSVReaderRef __CLASS__CSV_READER__METHODS__ALLOC() {
