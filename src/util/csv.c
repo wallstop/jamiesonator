@@ -2,7 +2,7 @@
  * CSV Reader
  *
  *  Author: Sean Allred
- * Version: 9 December 2012
+ * Version: 12 December 2012
  * Purpose: Allows basic interaction with CSV files
  *         (or those in the CSV format).
  *
@@ -17,14 +17,14 @@
 
 #define NEWLINE '\n'
 
-CSVReaderRef __CLASS__CSV_READER__METHODS__ALLOC() {
+CSVReader * __CLASS__CSV_READER__ALLOC() {
     return (CSVReaderRef)(malloc(sizeof(struct __CLASS__CSV_READER__MODEL)));
 }
 
-void __CLASS__CSV_READER__METHODS__DEALLOC(CSVReaderRef obj) {
+void __CLASS__CSV_READER__DEALLOC(CSVReader *obj) {
     // Free all the data
-    for(int i = 0; i < obj->_row_count; i++) {
-        for(int j = 0; j < obj->_col_count; j++) {
+    for(int i = 0; i < obj->_rowCount; i++) {
+        for(int j = 0; j < obj->_colCount; j++) {
             free(obj->data[i][j]);
         }
         free(obj->data[i]);
@@ -35,21 +35,21 @@ void __CLASS__CSV_READER__METHODS__DEALLOC(CSVReaderRef obj) {
     free(obj);
 }
 
-void __CLASS__CSV_READER__METHODS__INIT(CSVReaderRef obj) {
+void __CLASS__CSV_READER__INIT(CSVReader *obj) {
     obj->data = NULL;
     obj->_source = NULL;
-    obj->_col_count = obj->_row_count = -1;
+    obj->_colCount = obj->_rowCount = -1;
 }
 
 // We should probably have some sort of NEWLINE_SEQUENCE constant
-int __CLASS__CSV_READER__METHODS__READ(CSVReaderRef obj, const char *path, char delim) {
+int __CLASS__CSV_READER__READ(CSVReader *obj, const char *path, char delim) {
 
     obj->_source = path;
 
     FILE *f; // The file we are reading
-    long f_size; // The size of the file (determined by fseek)
+    long fSize; // The size of the file (determined by fseek)
     char *buffer; // the location of raw data
-    size_t size_read; // the actual number of bytes read from f
+    size_t sizeRead; // the actual number of bytes read from f
     if (f = fopen(obj->_source, "r")) {
         if (f == NULL) {
             // Some file error occurred
@@ -60,12 +60,12 @@ int __CLASS__CSV_READER__METHODS__READ(CSVReaderRef obj, const char *path, char 
         char *buffer;
         {
             fseek(f, 0, SEEK_END);
-            f_size = ftell(f);
+            fSize = ftell(f);
             rewind(f);
         }
         
         // Allocate enough memory to store the contents of the file
-        buffer = (char*) malloc (sizeof(char) * f_size);
+        buffer = (char*) malloc (sizeof(char) * fSize);
         
         if (buffer == NULL) {
             // Some memory error occurred, most likely not enough of it
@@ -73,9 +73,9 @@ int __CLASS__CSV_READER__METHODS__READ(CSVReaderRef obj, const char *path, char 
         }
         
         // Read the entire file into the buffer
-        size_read = fread(buffer, 1, f_size, f);
+        sizeRead = fread(buffer, 1, fSize, f);
         
-        if (size_read != f_size) {
+        if (sizeRead != fSize) {
             // We didn't read as many bytes as we thought we would!!
             return -4;
         }
@@ -94,28 +94,37 @@ int __CLASS__CSV_READER__METHODS__READ(CSVReaderRef obj, const char *path, char 
         // or something like that
         
         { // Determine the dimensions of the CSV
-            obj->_col_count = obj->_row_count = 0;
-            char *current_char = buffer;
-            while(*current_char != NEWLINE) {
-                if (*current_char == delim) {
-                    (obj->_col_count)++;
+            obj->_colCount = obj->_rowCount = 0;
+            char *currentChar = buffer;
+            while(*currentChar != NEWLINE) {
+                if (*currentChar == delim) {
+                    (obj->_colCount)++;
                 }
-                current_char++;
+                currentChar++;
             }
-            obj->_row_count++;
-            while(*++current_char != EOF) {
-                if (*current_char == NEWLINE) {
-                    (obj->_row_count)++;
+            obj->_rowCount++;
+            while(*++currentChar != EOF) {
+                if (*currentChar == NEWLINE) {
+                    (obj->_rowCount)++;
                 }
             }
         }
 
         /* We now know how many rows and columns the file is */
         
-        obj->data = (char***)(malloc(sizeof(char**) * obj->_row_count));
+        // Fill data from the file.
+        /// ? Can we use strtok instead?
+        
+        // Allocate memory for an array of string arrays of _rowCount length
+        obj->data = (char***)(malloc(sizeof(char**) * obj->_rowCount));
 
-        for (int i = 0; i < obj->_row_count; i++) {
-
+        for (int r = 0; r < obj->_rowCount; r++) {
+         // Allocate memory for this string array
+         obj->data[r] = (char**)(malloc(sizeof(char*) * obj->_colCount));
+         char *row = strtok
+         for (int c = 0; c < obj->_colCount; c++) {
+          // Fill this
+         }
         }
 
         fclose(f);
@@ -126,12 +135,12 @@ int __CLASS__CSV_READER__METHODS__READ(CSVReaderRef obj, const char *path, char 
 }
 
 
-void **__CLASS__CSV_READER__METHODS__PARSE(CSVReaderRef obj, void* (*parser)(char**), size_t size) {
+void **__CLASS__CSV_READER__PARSE(CSVReader *obj, void* (*parser)(char**), size_t size) {
     // Allocate enough memory to store each object
-    void **objects = (void**)malloc(size * obj->_row_count);
+    void **objects = (void**)malloc(size * obj->_rowCount);
 
     // Apply the parser
-    for (int i = 0; i < obj->_row_count; i++)
+    for (int i = 0; i < obj->_rowCount; i++)
     {
         objects[i] = parser(obj->data[i]);
     }
@@ -142,9 +151,9 @@ void **__CLASS__CSV_READER__METHODS__PARSE(CSVReaderRef obj, void* (*parser)(cha
 
 // Binds the class methods
 void __CLASS__CSV_READER__BIND(void) {
-    CSVReader.alloc   = __CLASS__CSV_READER__METHODS__ALLOC;
-    CSVReader.dealloc = __CLASS__CSV_READER__METHODS__DEALLOC;
-    CSVReader.init    = __CLASS__CSV_READER__METHODS__INIT;
-    CSVReader.read    = __CLASS__CSV_READER__METHODS__READ;
-    CSVReader.parse   = __CLASS__CSV_READER__METHODS__PARSE;
+    CSVReader.alloc   = __CLASS__CSV_READER__ALLOC;
+    CSVReader.dealloc = __CLASS__CSV_READER__DEALLOC;
+    CSVReader.init    = __CLASS__CSV_READER__INIT;
+    CSVReader.read    = __CLASS__CSV_READER__READ;
+    CSVReader.parse   = __CLASS__CSV_READER__PARSE;
 }
