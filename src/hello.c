@@ -9,6 +9,11 @@
 void _AnyKey(void);
 
 
+void _AnyKey(void) {
+    printf("Press enter to continue...");
+    getchar();
+}
+
 //int main(int argc, char **argv) {
 int main(void) {
     puts("hello, world");
@@ -40,9 +45,4 @@ int main(void) {
 
     _AnyKey();
     return 0;
-}
-
-void _AnyKey(void) {
-    printf("Press enter to continue...");
-    getchar();
 }
