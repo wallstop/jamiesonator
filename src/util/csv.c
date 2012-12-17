@@ -48,7 +48,7 @@ void __CLASS__CSV_READER__INIT(CSVReaderRef *obj)
 }
 
 // We should probably have some sort of NEWLINE_SEQUENCE constant
-int __CLASS__CSV_READER__READ(CSVReaderRef *obj, const char *path, char delim)
+int __CLASS__CSV_READER__READ(CSVReaderRef *obj, char *path, char delim)
 {
 
     obj->_source = path;
@@ -89,7 +89,6 @@ int __CLASS__CSV_READER__READ(CSVReaderRef *obj, const char *path, char delim)
             // We didn't read as many bytes as we thought we would!!
             return -4;
         }
-
         /* the whole file is now loaded into `buffer' */
 
         // Count the number of commas up to a newline,
@@ -105,25 +104,26 @@ int __CLASS__CSV_READER__READ(CSVReaderRef *obj, const char *path, char delim)
         {
             // Determine the dimensions of the CSV
             // TODO: theoretically breaks when there is only one line in the file
+            char *currentChar = buffer;
+            int position = 0;
             obj->_colCount = obj->_rowCount = 1;
 
-            char *currentChar = buffer;
-
-            while(*currentChar != NEWLINE && *currentChar != EOF)
+            while(currentChar[position] != NEWLINE && position != fSize)
             {
-                if (*currentChar == delim)
+                if (currentChar[position] == delim)
                 {
                     (obj->_colCount)++;
                 }
-                currentChar++;
+                position++;
             }
-            while(*currentChar != EOF)
+
+            while(position < fSize)
             {
-                if (*currentChar == NEWLINE)
+                if (currentChar[position] == NEWLINE && (position != fSize - 1))
                 {
                     (obj->_rowCount)++;
                 }
-                currentChar++;
+                position++;
             }
         }
 
@@ -146,18 +146,17 @@ int __CLASS__CSV_READER__READ(CSVReaderRef *obj, const char *path, char delim)
                 for (int c = 0; c < obj->_colCount; c++)
                 {
                     wordSize = 0;
-                    wordSize = 0;
-                    while(*currentChar != NEWLINE && *currentChar != EOF && &currentChar != delim)
+                    while(*currentChar != NEWLINE && *currentChar != EOF && *currentChar != delim)
                     {
-                        wordSize++;
-                        currentChar++;
+                            wordSize++;
+                            currentChar++;
                     }
 
                     obj->data[r][c] = (char*)(malloc(sizeof(char) * wordSize));
 
                     //Populates the word with data
                     for(int w = 0; w < wordSize; w++)
-                        obj->data[r][c][w] = *(currentChar - wordSize + w);
+                            obj->data[r][c][w] = *(currentChar - wordSize + w);
 
                     if(*currentChar != EOF)
                         currentChar++;
@@ -185,4 +184,13 @@ void **__CLASS__CSV_READER__PARSE(CSVReaderRef *obj, void* (*parser)(char**), si
 
     // and return the collection
     return objects;
+}
+
+void __INIT__CSV_READER(CSVReader* reader)
+{
+    (*reader).alloc = &__CLASS__CSV_READER__ALLOC;
+    (*reader).dealloc = &__CLASS__CSV_READER__DEALLOC;
+    (*reader).init = &__CLASS__CSV_READER__INIT;
+    (*reader).read = &__CLASS__CSV_READER__READ;
+    (*reader).parse = &__CLASS__CSV_READER__PARSE;
 }

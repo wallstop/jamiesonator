@@ -19,12 +19,13 @@
 #define __CLASS_DEF__CSV_READER_H
 
 typedef struct __CLASS__CSV_READER__MODEL CSVReaderRef;
+typedef struct __CLASS__CSV_READER__METHODS CSVReader;
 
 CSVReaderRef  *__CLASS__CSV_READER__ALLOC();
         void   __CLASS__CSV_READER__DEALLOC (CSVReaderRef *);
         void   __CLASS__CSV_READER__INIT    (CSVReaderRef *);
          int   __CLASS__CSV_READER__READ    (CSVReaderRef *,
-                                             const char *path,
+                                             char *path,
                                              char delimeter);
         void **__CLASS__CSV_READER__PARSE   (CSVReaderRef *,
                                              void *(*parser)(char **),
@@ -45,28 +46,32 @@ struct __CLASS__CSV_READER__METHODS {
 	// Frees all memory used by the given CSVReader.
 
 	void (*dealloc)(CSVReaderRef *);
-	
+
 	// Initializes the given CSVReader.
 	void (*init)(CSVReaderRef *);
-	
+
 	// Sets the source of this CSVReader.
 	// If no file exists at the given path,
 	// the return value is -1, 0 otherwise.
 	// Reads the delimited file and places
 	// read information into `data'
-	int (*read)(CSVReaderRef *, const char *, char);
+	int (*read)(CSVReaderRef *, char *, char);
 
     // Applies the given parser to each row in the CSV data.
     // This function assumes that data is non-null (that a file has been read)
     // It returns an array of objects produced by subsequent calls to the parser.
     // The last parameter is the size of the produced object.
     void **(*parse)(CSVReaderRef *, void *(*parser)(char **), size_t);
-} CSVReader = {
+};
+
+void __INIT__CSV_READER(CSVReader*);
+
+/* = {
     &__CLASS__CSV_READER__ALLOC,
     &__CLASS__CSV_READER__DEALLOC,
     &__CLASS__CSV_READER__INIT,
     &__CLASS__CSV_READER__READ,
     &__CLASS__CSV_READER__PARSE
-};
+} */
 
 #endif

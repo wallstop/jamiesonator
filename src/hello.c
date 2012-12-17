@@ -14,24 +14,29 @@ int main(void) {
     puts("hello, world");
 
     char *filepathbuf = (char*)malloc(sizeof(char)*256);
-    puts("Enter a file path (absolutely!!! MUAHAHA):");
-    scanf("%s", filepathbuf);
-    printf("You entered %s. Beginning test.", filepathbuf);
+    memset(filepathbuf, 0, 256);
 
-    CSVReaderRef *myReader = CSVReader.alloc();
-    CSVReader.init(myReader);
-    CSVReader.read(myReader, filepathbuf, ',');
+    printf("Enter a file path (absolutely!!! MUAHAHA):");
+    scanf("%s", filepathbuf);
+    printf("You entered %s. Beginning test.\n", filepathbuf);
+
+    CSVReader tempReader;
+
+    __INIT__CSV_READER(&tempReader);
+    CSVReaderRef *myReader = tempReader.alloc();
+    tempReader.init(myReader);
+    tempReader.read(myReader, filepathbuf, ',');
 
     for (int r = 0; r < myReader->_rowCount; r++)
     {
         for (int c = 0; c < myReader->_colCount; c++)
         {
-            printf("%s,", myReader->data[r][c]);
+            printf("%s ", myReader->data[r][c]);
         }
-        puts(" [End of record]");
+        printf("\n");
     }
 
-    puts("Test complete.");
+    printf("Test complete.");
 
     _AnyKey();
     return 0;
