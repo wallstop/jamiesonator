@@ -73,7 +73,7 @@ int __CLASS__CSV_READER__READ(CSVReaderRef *obj, char *path, char delim)
         }
 
         // Allocate enough memory to store the contents of the file
-        buffer = (char *) malloc (sizeof(char) * fSize);
+        buffer = (char*) malloc (sizeof(char) * fSize);
 
         if (buffer == NULL)
         {
@@ -186,7 +186,7 @@ void **__CLASS__CSV_READER__PARSE(CSVReaderRef *obj, void* (*parser)(char**), si
     return objects;
 }
 
-void __INIT__CSV_READER(CSVReader* reader)
+void __INIT__CSV_READER(CSVReader *reader)
 {
     (*reader).alloc = &__CLASS__CSV_READER__ALLOC;
     (*reader).dealloc = &__CLASS__CSV_READER__DEALLOC;

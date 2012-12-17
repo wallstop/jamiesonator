@@ -22,12 +22,12 @@ typedef struct __CLASS__CSV_READER__MODEL CSVReaderRef;
 typedef struct __CLASS__CSV_READER__METHODS CSVReader;
 
 CSVReaderRef  *__CLASS__CSV_READER__ALLOC();
-        void   __CLASS__CSV_READER__DEALLOC (CSVReaderRef *);
-        void   __CLASS__CSV_READER__INIT    (CSVReaderRef *);
-         int   __CLASS__CSV_READER__READ    (CSVReaderRef *,
+        void   __CLASS__CSV_READER__DEALLOC (CSVReaderRef*);
+        void   __CLASS__CSV_READER__INIT    (CSVReaderRef*);
+         int   __CLASS__CSV_READER__READ    (CSVReaderRef*,
                                              char *path,
                                              char delimeter);
-        void **__CLASS__CSV_READER__PARSE   (CSVReaderRef *,
+        void **__CLASS__CSV_READER__PARSE   (CSVReaderRef*,
                                              void *(*parser)(char **),
                                              size_t size);
 
@@ -64,14 +64,7 @@ struct __CLASS__CSV_READER__METHODS {
     void **(*parse)(CSVReaderRef *, void *(*parser)(char **), size_t);
 };
 
-void __INIT__CSV_READER(CSVReader*);
+void __INIT__CSV_READER(CSVReader *reader);
 
-/* = {
-    &__CLASS__CSV_READER__ALLOC,
-    &__CLASS__CSV_READER__DEALLOC,
-    &__CLASS__CSV_READER__INIT,
-    &__CLASS__CSV_READER__READ,
-    &__CLASS__CSV_READER__PARSE
-} */
 
 #endif
