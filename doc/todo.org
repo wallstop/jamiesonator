@@ -1,0 +1,8 @@
+# This file is best read in Emacs under org-mode with org-indent-mode
+
+* TODO Bring in the CSV.
+** TODO Read in the file into memory
+** TODO Count rows, columns
+** TODO read in the data and store it for future use, paying attention to saving space
+* TODO Parse it into reservation objects
+** TODO Get parse working in CSVReader
