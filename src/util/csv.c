@@ -25,17 +25,11 @@ CSVReaderRef* __CLASS__CSV_READER__ALLOC(void)
 void __CLASS__CSV_READER__DEALLOC(CSVReaderRef *obj)
 {
     // Free all the data
-<<<<<<< HEAD
+    // Potential bug: row-major vs col-major (C is row-major)
     for(int i = 0; i < obj->_rowCount; i++)
     {
         for(int j = 0; j < obj->_colCount; j++)
         {
-=======
-
-    // Potential bug: row-major vs col-major (C is row-major)
-    for(int i = 0; i < obj->_rowCount; i++) {
-        for(int j = 0; j < obj->_colCount; j++) {
->>>>>>> b75da4c4842e18f169eb51262be4b74aef2e8659
             free(obj->data[i][j]);
         }
         free(obj->data[i]);
@@ -79,16 +73,10 @@ int __CLASS__CSV_READER__READ(CSVReaderRef *obj, const char *path, char delim)
         }
 
         // Allocate enough memory to store the contents of the file
-<<<<<<< HEAD
-        buffer = (char*) malloc (sizeof(char) * fSize);
+        buffer = (char *) malloc (sizeof(char) * fSize);
 
         if (buffer == NULL)
         {
-=======
-        buffer = (char *)(malloc (sizeof(char) * fSize));
-        
-        if (buffer == NULL) {
->>>>>>> b75da4c4842e18f169eb51262be4b74aef2e8659
             // Some memory error occurred, most likely not enough of it
             return -3;
         }
@@ -114,17 +102,11 @@ int __CLASS__CSV_READER__READ(CSVReaderRef *obj, const char *path, char delim)
         ///     current_char++
 
         // or something like that
-<<<<<<< HEAD
-
         {
             // Determine the dimensions of the CSV
+            // TODO: theoretically breaks when there is only one line in the file
             obj->_colCount = obj->_rowCount = 1;
-=======
-        
-        { // Determine the dimensions of the CSV
-          // TODO: theoretically breaks when there is only one line in the file
-            obj->_colCount = obj->_rowCount = 0;
->>>>>>> b75da4c4842e18f169eb51262be4b74aef2e8659
+
             char *currentChar = buffer;
 
             while(*currentChar != NEWLINE && *currentChar != EOF)
@@ -135,17 +117,10 @@ int __CLASS__CSV_READER__READ(CSVReaderRef *obj, const char *path, char delim)
                 }
                 currentChar++;
             }
-<<<<<<< HEAD
-
             while(*currentChar != EOF)
             {
                 if (*currentChar == NEWLINE)
                 {
-=======
-            obj->_rowCount++;
-            while(*currentChar != EOF) {
-                if (*currentChar == NEWLINE) {
->>>>>>> b75da4c4842e18f169eb51262be4b74aef2e8659
                     (obj->_rowCount)++;
                 }
                 currentChar++;
@@ -156,12 +131,11 @@ int __CLASS__CSV_READER__READ(CSVReaderRef *obj, const char *path, char delim)
 
         // Fill data from the file.
         /// ? Can we use strtok instead?
-<<<<<<< HEAD
         {
             int wordSize;
             char *currentChar = buffer;
             // Allocate memory for an array of string arrays of _rowCount length
-            obj->data = (char***)(malloc(sizeof(char**) * obj->_rowCount));
+            obj->data = (char ***)(malloc(sizeof(char **) * obj->_rowCount));
 
             for (int r = 0; r < obj->_rowCount; r++)
             {
@@ -188,18 +162,6 @@ int __CLASS__CSV_READER__READ(CSVReaderRef *obj, const char *path, char delim)
                     if(*currentChar != EOF)
                         currentChar++;
                 }
-=======
-        
-        // Allocate memory for an array of string arrays of _rowCount length
-        obj->data = (char ***)(malloc(sizeof(char **) * obj->_rowCount));
-
-        for (int r = 0; r < obj->_rowCount; r++) {
-            // Allocate memory for this string array
-            obj->data[r] = (char **)(malloc(sizeof(char *) * obj->_colCount));
-            //char *row = strtok
-            for (int c = 0; c < obj->_colCount; c++) {
-                // Fill this
->>>>>>> b75da4c4842e18f169eb51262be4b74aef2e8659
             }
         }
 
@@ -210,12 +172,8 @@ int __CLASS__CSV_READER__READ(CSVReaderRef *obj, const char *path, char delim)
 }
 
 
-<<<<<<< HEAD
 void **__CLASS__CSV_READER__PARSE(CSVReaderRef *obj, void* (*parser)(char**), size_t size)
 {
-=======
-void **__CLASS__CSV_READER__PARSE(CSVReaderRef *obj, void *(*parser)(char **), size_t size) {
->>>>>>> b75da4c4842e18f169eb51262be4b74aef2e8659
     // Allocate enough memory to store each object
     void **objects = (void**)malloc(size * obj->_rowCount);
 
@@ -227,18 +185,4 @@ void **__CLASS__CSV_READER__PARSE(CSVReaderRef *obj, void *(*parser)(char **), s
 
     // and return the collection
     return objects;
-<<<<<<< HEAD
 }
-
-// Binds the class methods
-void __CLASS__CSV_READER__BIND(void)
-{
-    CSVReader.alloc   = __CLASS__CSV_READER__ALLOC;
-    CSVReader.dealloc = __CLASS__CSV_READER__DEALLOC;
-    CSVReader.init    = __CLASS__CSV_READER__INIT;
-    CSVReader.read    = __CLASS__CSV_READER__READ;
-    CSVReader.parse   = __CLASS__CSV_READER__PARSE;
-}
-=======
-}
->>>>>>> b75da4c4842e18f169eb51262be4b74aef2e8659
