@@ -131,7 +131,6 @@ int __CLASS__CSV_READER__READ(CSVReaderRef *obj, const char *path, char delim) {
         return 0;
     }
     return -1; // The file was unable to be read (probably didn't exist)
-    
 }
 
 

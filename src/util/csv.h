@@ -19,6 +19,16 @@
 #define __CLASS_DEF__CSV_READER_H
 
 typedef struct __CLASS__CSV_READER__MODEL CSVReaderRef;
+
+CSVReaderRef * __CLASS__CSV_READER__ALLOC();
+        void   __CLASS__CSV_READER__DEALLOC (CSVReaderRef *);
+        void   __CLASS__CSV_READER__INIT    (CSVReaderRef *);
+         int   __CLASS__CSV_READER__READ    (CSVReaderRef *,
+                                             const char *path,
+                                             char delim);
+        void **__CLASS__CSV_READER__PARSE   (CSVReaderRef *,
+                                             void* (*parser)(char**),
+                                             size_t size);
  
 struct __CLASS__CSV_READER__MODEL {
 	const char * _source; // The current path of the CSV file of interest
@@ -50,6 +60,12 @@ struct __CLASS__CSV_READER__METHODS {
     // It returns an array of objects produced by subsequent calls to the parser.
     // The last parameter is the size of the produced object.
     void **(*parse)(CSVReaderRef*, void* (*parser)(char**), size_t);
-} CSVReader;
+} CSVReader = {
+    &__CLASS__CSV_READER__ALLOC,
+    &__CLASS__CSV_READER__DEALLOC,
+    &__CLASS__CSV_READER__INIT,
+    &__CLASS__CSV_READER__READ,
+    &__CLASS__CSV_READER__PARSE
+}
 
 #endif
