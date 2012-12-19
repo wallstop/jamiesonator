@@ -17,11 +17,11 @@
 
 #define NEWLINE '\n'
 
-CSVReader * __CLASS__CSV_READER__ALLOC() {
+CSVReaderRef * __CLASS__CSV_READER__ALLOC() {
     return (CSVReaderRef)(malloc(sizeof(struct __CLASS__CSV_READER__MODEL)));
 }
 
-void __CLASS__CSV_READER__DEALLOC(CSVReader *obj) {
+void __CLASS__CSV_READER__DEALLOC(CSVReaderRef *obj) {
     // Free all the data
     for(int i = 0; i < obj->_rowCount; i++) {
         for(int j = 0; j < obj->_colCount; j++) {
@@ -35,14 +35,14 @@ void __CLASS__CSV_READER__DEALLOC(CSVReader *obj) {
     free(obj);
 }
 
-void __CLASS__CSV_READER__INIT(CSVReader *obj) {
+void __CLASS__CSV_READER__INIT(CSVReaderRef *obj) {
     obj->data = NULL;
     obj->_source = NULL;
     obj->_colCount = obj->_rowCount = -1;
 }
 
 // We should probably have some sort of NEWLINE_SEQUENCE constant
-int __CLASS__CSV_READER__READ(CSVReader *obj, const char *path, char delim) {
+int __CLASS__CSV_READER__READ(CSVReaderRef *obj, const char *path, char delim) {
 
     obj->_source = path;
 
@@ -121,7 +121,7 @@ int __CLASS__CSV_READER__READ(CSVReader *obj, const char *path, char delim) {
         for (int r = 0; r < obj->_rowCount; r++) {
          // Allocate memory for this string array
          obj->data[r] = (char**)(malloc(sizeof(char*) * obj->_colCount));
-         char *row = strtok
+         //char *row = strtok
          for (int c = 0; c < obj->_colCount; c++) {
           // Fill this
          }
@@ -135,7 +135,7 @@ int __CLASS__CSV_READER__READ(CSVReader *obj, const char *path, char delim) {
 }
 
 
-void **__CLASS__CSV_READER__PARSE(CSVReader *obj, void* (*parser)(char**), size_t size) {
+void **__CLASS__CSV_READER__PARSE(CSVReaderRef *obj, void* (*parser)(char**), size_t size) {
     // Allocate enough memory to store each object
     void **objects = (void**)malloc(size * obj->_rowCount);
 
