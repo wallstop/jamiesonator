@@ -18,7 +18,7 @@
 #define NEWLINE '\n'
 
 CSVReaderRef * __CLASS__CSV_READER__ALLOC() {
-    return (CSVReaderRef)(malloc(sizeof(struct __CLASS__CSV_READER__MODEL)));
+    return (CSVReaderRef *)(malloc(sizeof(struct __CLASS__CSV_READER__MODEL)));
 }
 
 void __CLASS__CSV_READER__DEALLOC(CSVReaderRef *obj) {
