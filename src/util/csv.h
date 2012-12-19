@@ -12,27 +12,27 @@
 /*  TODO
  *  ====
  * - Add writing functionality
- * 
+ *
  */
- 
+
 #ifndef __CLASS_DEF__CSV_READER_H
 #define __CLASS_DEF__CSV_READER_H
 
 typedef struct __CLASS__CSV_READER__MODEL CSVReaderRef;
 
 CSVReaderRef * __CLASS__CSV_READER__ALLOC();
-        void   __CLASS__CSV_READER__DEALLOC (CSVReaderRef *);
-        void   __CLASS__CSV_READER__INIT    (CSVReaderRef *);
-         int   __CLASS__CSV_READER__READ    (CSVReaderRef *,
+        void   __CLASS__CSV_READER__DEALLOC (CSVReaderRef*);
+        void   __CLASS__CSV_READER__INIT    (CSVReaderRef*);
+         int   __CLASS__CSV_READER__READ    (CSVReaderRef*,
                                              const char *path,
                                              char delim);
         void **__CLASS__CSV_READER__PARSE   (CSVReaderRef *,
                                              void* (*parser)(char**),
                                              size_t size);
- 
+
 struct __CLASS__CSV_READER__MODEL {
-	const char * _source; // The current path of the CSV file of interest
-	char *** data; // a matrix of strings - an array of arrays of arrays of characters.
+	const char *_source; // The current path of the CSV file of interest
+	char ***data; // a matrix of strings - an array of arrays of arrays of characters.
 
     int _rowCount;
     int _colCount;
@@ -41,13 +41,13 @@ struct __CLASS__CSV_READER__MODEL {
 struct __CLASS__CSV_READER__METHODS {
 	// Creates a new CSVReader.
 	CSVReaderRef *(*alloc)();
-	
+
 	// Frees all memory used by the given CSVReader.
 	void (*dealloc)(CSVReaderRef*);
-	
+
 	// Initializes the given CSVReader.
 	void (*init)(CSVReaderRef*);
-	
+
 	// Sets the source of this CSVReader.
 	// If no file exists at the given path,
 	// the return value is -1, 0 otherwise.
@@ -66,6 +66,6 @@ struct __CLASS__CSV_READER__METHODS {
     &__CLASS__CSV_READER__INIT,
     &__CLASS__CSV_READER__READ,
     &__CLASS__CSV_READER__PARSE
-}
+};
 
 #endif
