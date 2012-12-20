@@ -186,11 +186,13 @@ void **__CLASS__CSV_READER__PARSE(CSVReaderRef *obj, void* (*parser)(char**), si
     return objects;
 }
 
-void __INIT__CSV_READER(CSVReader *reader)
+void __INIT__CSV_READER__METHODS()
 {
-    (*reader).alloc = &__CLASS__CSV_READER__ALLOC;
-    (*reader).dealloc = &__CLASS__CSV_READER__DEALLOC;
-    (*reader).init = &__CLASS__CSV_READER__INIT;
-    (*reader).read = &__CLASS__CSV_READER__READ;
-    (*reader).parse = &__CLASS__CSV_READER__PARSE;
+    CSVReader.alloc = &__CLASS__CSV_READER__ALLOC;
+    CSVReader.dealloc = &__CLASS__CSV_READER__DEALLOC;
+    CSVReader.init = &__CLASS__CSV_READER__INIT;
+    CSVReader.read = &__CLASS__CSV_READER__READ;
+    CSVReader.parse = &__CLASS__CSV_READER__PARSE;
+
+
 }

@@ -19,7 +19,7 @@
 #define __CLASS_DEF__CSV_READER_H
 
 typedef struct __CLASS__CSV_READER__MODEL CSVReaderRef;
-typedef struct __CLASS__CSV_READER__METHODS CSVReader;
+//typedef struct __CLASS__CSV_READER__METHODS CSVReader;
 
 CSVReaderRef  *__CLASS__CSV_READER__ALLOC();
 void   __CLASS__CSV_READER__DEALLOC (CSVReaderRef*);
@@ -64,9 +64,9 @@ struct __CLASS__CSV_READER__METHODS
     // It returns an array of objects produced by subsequent calls to the parser.
     // The last parameter is the size of the produced object.
     void **(*parse)(CSVReaderRef *, void *(*parser)(char **), size_t);
-};
+} CSVReader;
 
-void __INIT__CSV_READER(CSVReader *reader);
+void __INIT__CSV_READER__METHODS();
 
 
 #endif

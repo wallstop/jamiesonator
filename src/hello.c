@@ -23,12 +23,10 @@ int main(void)
     scanf("%s", filepathbuf);
     printf("You entered %s. Beginning test.\n", filepathbuf);
 
-    CSVReader tempReader;
-
-    __INIT__CSV_READER(&tempReader);
-    CSVReaderRef *myReader = tempReader.alloc();
-    tempReader.init(myReader);
-    tempReader.read(myReader, filepathbuf, ',');
+    __INIT__CSV_READER__METHODS();
+    CSVReaderRef *myReader = CSVReader.alloc();
+    CSVReader.init(myReader);
+    CSVReader.read(myReader, filepathbuf, ',');
 
     for (int r = 0; r < myReader->_rowCount; r++)
     {
