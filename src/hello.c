@@ -5,17 +5,15 @@
 // with a relative path. Any wisdom on that end?
 #include "util/csv.h"
 
-
-void _AnyKey(void);
-
-
-void _AnyKey(void) {
+void _AnyKey(void)
+{
     printf("Press enter to continue...");
     getchar();
 }
 
 //int main(int argc, char **argv) {
-int main(void) {
+int main(void)
+{
     puts("hello, world");
 
     char *filepathbuf = (char*)malloc(sizeof(char)*256);

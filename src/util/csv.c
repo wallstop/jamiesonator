@@ -148,15 +148,15 @@ int __CLASS__CSV_READER__READ(CSVReaderRef *obj, char *path, char delim)
                     wordSize = 0;
                     while(*currentChar != NEWLINE && *currentChar != EOF && *currentChar != delim)
                     {
-                            wordSize++;
-                            currentChar++;
+                        wordSize++;
+                        currentChar++;
                     }
 
                     obj->data[r][c] = (char*)(malloc(sizeof(char) * wordSize));
 
                     //Populates the word with data
                     for(int w = 0; w < wordSize; w++)
-                            obj->data[r][c][w] = *(currentChar - wordSize + w);
+                        obj->data[r][c][w] = *(currentChar - wordSize + w);
 
                     if(*currentChar != EOF)
                         currentChar++;
